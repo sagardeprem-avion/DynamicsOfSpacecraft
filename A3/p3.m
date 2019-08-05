@@ -1,0 +1,12 @@
+clear
+clc
+%%
+Ixx=98;
+Iyy=102;
+Izz=150;
+wz=0.5;
+wx=0.1;
+wy=0.02;
+%%
+wt=sqrt(wx^2+wy^2);
+It=sqrt(wx^2+wy^2)

@@ -1,0 +1,1510 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass report
+\begin_preamble
+
+\end_preamble
+\use_default_options true
+\begin_modules
+eqs-within-sections
+figs-within-sections
+customHeadersFooters
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command bibtex
+\index_command default
+\float_placement H
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks true
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize letterpaper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\backgroundcolor #ffffff
+\fontcolor #000000
+\notefontcolor #0000ff
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\topmargin 4cm
+\rightmargin 2cm
+\bottommargin 3cm
+\headheight 1cm
+\headsep 0.5cm
+\footskip 1cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 2
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Dynamics and Control Of Spacecraft
+\begin_inset Newline newline
+\end_inset
+
+Astrosat Controller Design
+\end_layout
+
+\begin_layout Author
+Kavita Sivaraman - AE16M006 
+\begin_inset Newline newline
+\end_inset
+
+Prem Sagar S - AE14B021
+\begin_inset Newline newline
+\end_inset
+
+Rishi - AE17D0
+\begin_inset Newline newline
+\end_inset
+
+Daniel Satke - AE17F010
+\begin_inset Newline newline
+\end_inset
+
+Abdul Azeez - AE14B028
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FloatList figure
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Kinematics and Dynamics of Astrosat
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+We are planning to design a preliminary attitude control system for ASTROSAT
+ satellite.
+ Since this satellite is an inertial pointing satellite, we have chosen
+ to stabilize the satellite using zero momentum biased stabilization method
+ with 4 wheel tetrahedron configuration.
+ Star sensors senses and provide the values of roll, pitch and yaw Euler
+ angles along with gyroscopes.
+ Our design also includes the momentum dumping, as and when any of the wheels
+ reach their maximum angular rate capacity.
+ 
+\end_layout
+
+\begin_layout Standard
+We have initially derived the kinematic equations of motion using 2-3-1
+ rotation sequence to get the Euler angles.
+ Euler angles are then converted to quaternions before integration to avoid
+ any singularities like gimbal lock phenomenon.
+ Dynamic equations of motion for inertially pointing satellite, with zero
+ momentum biased system configuration is derived using Euler equations.
+ Gravity gradient torque is also considered as disturbance torque, apart
+ from the disturbance torque given in the problem which is in the order
+ of milli N-m.
+ Since our’s is an inertially pointing satellite, our roll,pitch and yaw
+ equations of motion will be decoupled.
+ 
+\end_layout
+
+\begin_layout Standard
+We have studied the motion of satellite, in roll, pitch and yaw, found that
+ the solutions are unstable in all the 3 DOF in the presence of disturbances
+ and hence we have concluded to go for active stabilization technique based
+ on Proportional-Derivative (PD) controller using momentum wheels in tetrahedral
+ configuration.
+ The gains for our control system design are chosen in such a way that the
+ maximum allowable steady state error does not exceed 0.005 deg about all
+ the axes (zero momentum biased system).
+ 
+\end_layout
+
+\begin_layout Section
+Astrosat
+\end_layout
+
+\begin_layout Standard
+It is an inertial pointing spacecraft in a 650km 6 deg inclined circular
+ orbit; 4-wheel tetrahedron wheel system is used for momentum management;
+ Actual MI properties of the s/c after deployment.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+J_{c}=\begin{bmatrix}1763 & -52 & -16\\
+-52 & 1591 & 25\\
+-16 & 25 & 1185
+\end{bmatrix}kg-m^{2}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Mass of the s/c = 1542 Kg.
+ [x,y,z] axes are yaw, roll and pitch respectively.
+ Initially we have assumed that the cross product of inertias are negligible
+ and designed the control system.
+ Then once the control design is completed, we have used the actual inertia
+ matrix to check the performance variations.
+ The momentum dumping is achieved by using 60 A-m
+\begin_inset Formula $^{2}$
+\end_inset
+
+ torque rods about all the three axes.
+ Disturbance torques are T
+\begin_inset Formula $_{x}$
+\end_inset
+
+= T
+\begin_inset Formula $_{z}$
+\end_inset
+
+=
+\begin_inset Formula $2*10$
+\end_inset
+
+
+\begin_inset Formula $^{-3}$
+\end_inset
+
+ Nm and T
+\begin_inset Formula $_{y}$
+\end_inset
+
+=10
+\begin_inset Formula $^{-4}$
+\end_inset
+
+ Nm and satellite's orbital angular velocity, 
+\begin_inset Formula $\omega_{o}=1.0741*10^{-3}$
+\end_inset
+
+rad/sec.
+\end_layout
+
+\begin_layout Section
+Kinematics
+\end_layout
+
+\begin_layout Standard
+We are choosing 2-3-1 (
+\begin_inset Formula $\psi$
+\end_inset
+
+,
+\begin_inset Formula $\theta$
+\end_inset
+
+, 
+\begin_inset Formula $\phi$
+\end_inset
+
+) rotation for our kinematics.
+ The angle rates and angular velocity can be related as below,
+\begin_inset Formula 
+\begin{equation}
+\begin{bmatrix}\dot{\phi}\\
+\dot{\psi}\\
+\dot{\theta}
+\end{bmatrix}=\begin{bmatrix}1 & -cos\phi tan\theta & sin\phi tan\theta\\
+0 & cos\phi sec\theta & -sin\phi sec\theta\\
+0 & sin\phi & cos\phi
+\end{bmatrix}\begin{bmatrix}\omega_{x}\\
+\omega_{y}\\
+\omega_{z}
+\end{bmatrix}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Astrosat
+\end_layout
+
+\begin_layout Standard
+It is an inertial pointing spacecraft in a 650km 6 deg inclined circular
+ orbit; 4-wheel tetrahedron wheel system is used for momentum management;
+ Actual MI properties of the s/c after deployment.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+J_{c}=\begin{bmatrix}1763 & -52 & -16\\
+-52 & 1591 & 25\\
+-16 & 25 & 1185
+\end{bmatrix}kg-m^{2}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Mass of the s/c = 1542 Kg.
+ [x,y,z] axes are yaw, roll and pitch respectively.
+ Initially we have assumed that the cross product of inertias are negligible
+ and designed the control system.
+ Then once the control design is completed, we have used the actual inertia
+ matrix to check the performance variations.
+ The momentum dumping is achieved by using 60 A-m
+\begin_inset Formula $^{2}$
+\end_inset
+
+ torque rods about all the three axes.
+ Disturbance torques are T
+\begin_inset Formula $_{x}$
+\end_inset
+
+= T
+\begin_inset Formula $_{z}$
+\end_inset
+
+=
+\begin_inset Formula $2*10$
+\end_inset
+
+
+\begin_inset Formula $^{-3}$
+\end_inset
+
+ Nm and T
+\begin_inset Formula $_{y}$
+\end_inset
+
+=10
+\begin_inset Formula $^{-4}$
+\end_inset
+
+ Nm and satellite's orbital angular velocity, 
+\begin_inset Formula $\omega_{o}=1.0741*10^{-3}$
+\end_inset
+
+rad/sec.
+\end_layout
+
+\begin_layout Section
+Kinematics
+\end_layout
+
+\begin_layout Standard
+We are choosing 2-3-1 (
+\begin_inset Formula $\psi$
+\end_inset
+
+,
+\begin_inset Formula $\theta$
+\end_inset
+
+, 
+\begin_inset Formula $\phi$
+\end_inset
+
+) rotation for our kinematics.
+ The angle rates and angular velocity can be related as below,
+\begin_inset Formula 
+\begin{equation}
+\begin{bmatrix}\dot{\phi}\\
+\dot{\psi}\\
+\dot{\theta}
+\end{bmatrix}=\begin{bmatrix}1 & -cos\phi tan\theta & sin\phi tan\theta\\
+0 & cos\phi sec\theta & -sin\phi sec\theta\\
+0 & sin\phi & cos\phi
+\end{bmatrix}\begin{bmatrix}\omega_{x}\\
+\omega_{y}\\
+\omega_{z}
+\end{bmatrix}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+After small angle approximations,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\begin{bmatrix}\dot{\phi}\\
+\dot{\psi}\\
+\dot{\theta}
+\end{bmatrix}=\begin{bmatrix}\omega_{x}\\
+\omega_{y}\\
+\omega_{z}
+\end{bmatrix}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Dynamics
+\end_layout
+
+\begin_layout Standard
+Since we are using a zero momentum biased control system, the following
+ holds true.
+ Where 
+\begin_inset Formula $\vec{h_{i}}$
+\end_inset
+
+ are the wheel angular momentum.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\vec{h}_{1}+\vec{h}_{2}+\vec{h}_{3}+\vec{h}_{4}=0
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Also each of XYZ components must be zero.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+h_{wx}=\frac{h_{1}}{\sqrt{3}}-\frac{h_{2}}{\sqrt{3}}-\frac{h_{3}}{\sqrt{3}}+\frac{h_{4}}{\sqrt{3}}=0
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+h_{wy}=\frac{h_{1}}{\sqrt{3}}-\frac{h_{2}}{\sqrt{3}}+\frac{h_{3}}{\sqrt{3}}-\frac{h_{4}}{\sqrt{3}}=0
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+h_{wz}=\frac{h_{1}}{\sqrt{3}}+\frac{h_{2}}{\sqrt{3}}-\frac{h_{3}}{\sqrt{3}}-\frac{h_{4}}{\sqrt{3}}=0
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The dynamics of the wheels is governed by,
+\begin_inset Formula 
+\[
+\frac{d}{dt}\left(\vec{H}_{w}\right)=-\vec{T}_{c}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $\vec{T}_{c}$
+\end_inset
+
+ is the control torque.
+\end_layout
+
+\begin_layout Standard
+The Euler equations for the spacecraft system can be rewritten as below,
+ 
+\begin_inset Formula 
+\begin{equation}
+J_{c}\dot{\omega}+\omega\times(J_{c}\omega)=T_{c}+T_{d}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}J_{x}\dot{\omega}_{x}+\frac{I_{w}\dot{\omega}_{1}}{\sqrt{3}}-\frac{I_{w}\dot{\omega}_{2}}{\sqrt{3}}+\frac{I_{w}\dot{\omega}_{3}}{\sqrt{3}}-\frac{I_{w}\dot{\omega}_{4}}{\sqrt{3}}\\
+-\omega_{z}\left(J_{y}\omega_{y}+\frac{I_{w}\omega_{1}}{\sqrt{3}}-\frac{I_{w}\omega_{2}}{\sqrt{3}}+\frac{I_{w}\omega_{3}}{\sqrt{3}}-\frac{I_{w}\omega_{4}}{\sqrt{3}}\right)\\
++\omega_{y}\left(J_{z}\omega_{z}+\frac{I_{w}\omega_{1}}{\sqrt{3}}+\frac{I_{w}\omega_{2}}{\sqrt{3}}-\frac{I_{w}\omega_{3}}{\sqrt{3}}-\frac{I_{w}\omega_{4}}{\sqrt{3}}\right) & =0
+\end{aligned}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}J_{y}\ddot{\omega}_{y}+\frac{I_{w}\dot{\omega}_{1}}{\sqrt{3}}+\frac{I_{w}\dot{\omega}_{2}}{\sqrt{3}}-\frac{I_{w}\dot{\omega}_{3}}{\sqrt{3}}+\frac{I_{w}\dot{\omega}_{4}}{\sqrt{3}}\\
++\omega_{z}\left(J_{x}\omega_{x}+\frac{I_{w}\omega_{1}}{\sqrt{3}}-\frac{I_{w}\omega_{2}}{\sqrt{3}}-\frac{I_{w}\omega_{3}}{\sqrt{3}}+\frac{I_{w}\omega_{4}}{\sqrt{3}}\right)\\
+-\omega_{x}\left(J_{z}\omega_{z}+\frac{I_{w}\omega_{1}}{\sqrt{3}}+\frac{I_{w}\omega_{2}}{\sqrt{3}}-\frac{I_{w}\omega_{3}}{\sqrt{3}}-\frac{I_{w}\omega_{4}}{\sqrt{3}}\right) & =0
+\end{aligned}
+\end{equation}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}J_{z}\ddot{\omega}_{z}+\frac{I_{w}\dot{\omega}_{1}}{\sqrt{3}}-\frac{I_{w}\dot{\omega}_{2}}{\sqrt{3}}-\frac{I_{w}\dot{\omega}_{3}}{\sqrt{3}}+\frac{I_{w}\dot{\omega}_{4}}{\sqrt{3}}\\
+-\omega_{y}\left(J_{x}\omega_{x}+\frac{I_{w}\omega_{1}}{\sqrt{3}}-\frac{I_{w}\omega_{2}}{\sqrt{3}}-\frac{I_{w}\omega_{3}}{\sqrt{3}}+\frac{I_{w}\omega_{4}}{\sqrt{3}}\right)\\
++\omega_{x}\left(J_{y}\omega_{y}+\frac{I_{w}\omega_{1}}{\sqrt{3}}-\frac{I_{w}\omega_{2}}{\sqrt{3}}+\frac{I_{w}\omega_{3}}{\sqrt{3}}-\frac{I_{w}\omega_{4}}{\sqrt{3}}\right) & =0
+\end{aligned}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+After doing small angle approximations the euler equations can be written
+ as follows,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}J_{x}\ddot{\phi}+\frac{I_{w}\dot{\omega}_{1}}{\sqrt{3}}-\frac{I_{w}\dot{\omega}_{2}}{\sqrt{3}}+\frac{I_{w}\dot{\omega}_{3}}{\sqrt{3}}-\frac{I_{w}\dot{\omega}_{4}}{\sqrt{3}}\\
+-\dot{\theta}\left(\frac{I_{w}\omega_{1}}{\sqrt{3}}-\frac{I_{w}\omega_{2}}{\sqrt{3}}+\frac{I_{w}\omega_{3}}{\sqrt{3}}-\frac{I_{w}\omega_{4}}{\sqrt{3}}\right)\\
++\dot{\psi}\left(\frac{I_{w}\omega_{1}}{\sqrt{3}}+\frac{I_{w}\omega_{2}}{\sqrt{3}}-\frac{I_{w}\omega_{3}}{\sqrt{3}}-\frac{I_{w}\omega_{4}}{\sqrt{3}}\right) & =0
+\end{aligned}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}J_{y}\ddot{\psi}+\frac{I_{w}\dot{\omega}_{1}}{\sqrt{3}}+\frac{I_{w}\dot{\omega}_{2}}{\sqrt{3}}-\frac{I_{w}\dot{\omega}_{3}}{\sqrt{3}}+\frac{I_{w}\dot{\omega}_{4}}{\sqrt{3}}\\
++\dot{\theta}\left(\frac{I_{w}\omega_{1}}{\sqrt{3}}-\frac{I_{w}\omega_{2}}{\sqrt{3}}-\frac{I_{w}\omega_{3}}{\sqrt{3}}+\frac{I_{w}\omega_{4}}{\sqrt{3}}\right)\\
+-\dot{\phi}\left(\frac{I_{w}\omega_{1}}{\sqrt{3}}+\frac{I_{w}\omega_{2}}{\sqrt{3}}-\frac{I_{w}\omega_{3}}{\sqrt{3}}-\frac{I_{w}\omega_{4}}{\sqrt{3}}\right) & =0
+\end{aligned}
+\end{equation}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}J_{z}\ddot{\theta}+\frac{I_{w}\dot{\omega}_{1}}{\sqrt{3}}-\frac{I_{w}\dot{\omega}_{2}}{\sqrt{3}}-\frac{I_{w}\dot{\omega}_{3}}{\sqrt{3}}+\frac{I_{w}\dot{\omega}_{4}}{\sqrt{3}}\\
+-\dot{\psi}\left(\frac{I_{w}\omega_{1}}{\sqrt{3}}-\frac{I_{w}\omega_{2}}{\sqrt{3}}-\frac{I_{w}\omega_{3}}{\sqrt{3}}+\frac{I_{w}\omega_{4}}{\sqrt{3}}\right)\\
++\dot{\phi}\left(\frac{I_{w}\omega_{1}}{\sqrt{3}}-\frac{I_{w}\omega_{2}}{\sqrt{3}}+\frac{I_{w}\omega_{3}}{\sqrt{3}}-\frac{I_{w}\omega_{4}}{\sqrt{3}}\right) & =0
+\end{aligned}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Controller Design
+\end_layout
+
+\begin_layout Standard
+We will be using the Proportional Differentiator controller.
+\end_layout
+
+\begin_layout Subsection
+Modified PD controller
+\end_layout
+
+\begin_layout Subsection*
+Control Torque
+\end_layout
+
+\begin_layout Standard
+For a general moment of inertia matrix, after including control torques,
+ disturbance torques and the gravity gradient torques, the dynamic equations
+ become:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+I_{xx}\dot{\omega}_{x}+I_{xy}\dot{\omega}_{y}+I_{xz}\dot{\omega}_{z}+\nonumber \\
+\omega_{y}\left(I_{zx}\omega_{x}+I_{zy}\omega_{y}+I_{zz}\omega_{z}\right)\nonumber \\
+-\omega_{z}\left(I_{yx}\omega_{x}+I_{yy}\omega_{y}+I_{yz}\omega_{z}\right) & =T_{cx}+T_{dx}+T_{gx}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+I_{yx}\dot{\omega}_{x}+I_{yy}\dot{\omega}_{y}+I_{yz}\dot{\omega}_{z}+\nonumber \\
+\omega_{z}\left(I_{xx}\omega_{x}+I_{xy}\omega_{y}+I_{xz}\omega_{z}\right)\nonumber \\
+-\omega_{x}\left(I_{zx}\omega_{x}+I_{zy}\omega_{y}+I_{zz}\omega_{z}\right) & =T_{cy}+T_{dy}+T_{gy}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+I_{zx}\dot{\omega}_{x}+I_{zy}\dot{\omega}_{y}+I_{zz}\dot{\omega}_{z}+\nonumber \\
+\omega_{x}\left(I_{yx}\omega_{x}+I_{yy}\omega_{y}+I_{yz}\omega_{z}\right)\nonumber \\
+-\omega_{y}\left(I_{xx}\omega_{x}+I_{xy}\omega_{y}+I_{xz}\omega_{z}\right) & =T_{cz}+T_{dz}+T_{gz}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+T_{c}=-\begin{bmatrix}K_{px}(\phi-R_{\phi})+K_{dx}\dot{\phi}\\
+K_{py}(\psi-R_{\psi})+K_{dy}\dot{\psi}\\
+K_{pz}(\theta-R_{\theta})+K_{dz}\dot{\theta}
+\end{bmatrix}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Gravity Gradient torques:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+r_{b} & =C_{bo}r\\
+ & =\begin{bmatrix}1 & \theta & -\psi\\
+-\theta & 1 & \phi\\
+\psi & -\phi & 1
+\end{bmatrix}\begin{bmatrix}-r\\
+0\\
+0
+\end{bmatrix}\nonumber \\
+ & =\begin{bmatrix}-r\\
+\theta r\\
+-\psi r
+\end{bmatrix}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+T_{g} & = & \frac{3\mu}{r^{5}}r_{b}^{x}Ir_{b}\\
+ & = & \frac{3\mu}{r^{5}}\begin{bmatrix}0 & \psi r & \theta r\\
+-\psi r & 0 & r\\
+-\theta r & -r & 0
+\end{bmatrix}I\begin{bmatrix}-r\\
+\theta r\\
+-\psi r
+\end{bmatrix}\nonumber \\
+ & = & \frac{3\mu}{r^{3}}\begin{bmatrix}0\\
+\left(I_{x}-I_{z}\right)\psi\\
+\left(I_{x}-I_{y}\right)\theta
+\end{bmatrix}\nonumber \\
+ & = & 3\omega_{0}^{2}\begin{bmatrix}0\\
+\left(I_{x}-I_{z}\right)\psi\\
+\left(I_{x}-I_{y}\right)\theta
+\end{bmatrix}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Wheel Dynamics
+\end_layout
+
+\begin_layout Standard
+The individual wheel torques are:
+\begin_inset Formula 
+\begin{equation}
+T_{1}=\frac{1}{4}\left(\sqrt{3}T_{cx}+\sqrt{3}T_{cy}+\sqrt{3}T_{cz}\right)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+T_{2}=\frac{1}{4}\left(-\sqrt{3}T_{cx}-\sqrt{3}T_{cy}+\sqrt{3}T_{cz}\right)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+T_{3}=\frac{1}{4}\left(-\sqrt{3}T_{cx}+\sqrt{3}T_{cy}-\sqrt{3}T_{cz}\right)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+T_{4}=\frac{1}{4}\left(\sqrt{3}T_{cx}-\sqrt{3}T_{cx}-\sqrt{3}T_{cx}\right)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The dynamics of wheel 
+\series bold
+i 
+\series default
+are described by the equations below:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+I\dot{\omega}_{i}=T_{i}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+I\dot{\omega}_{i}+IC_{w_{i}b}\dot{\omega}+(\omega_{i}+C_{w_{i}b}\omega)\times(I\omega_{i}+IC_{w_{i}b}\omega)=T_{i}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+I\dot{\omega}_{i}=T_{i}-IC_{w_{i}b}\dot{\omega}-(\omega_{i}+C_{w_{i}b}\omega)\times(I\omega_{i}+IC_{w_{i}b}\omega)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where I is the moment of inertia of the whole spacecraft.
+\end_layout
+
+\begin_layout Subsection
+Estrimates for 
+\begin_inset Formula $K_{d}$
+\end_inset
+
+ and 
+\begin_inset Formula $K_{p}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The system can be represented as a transfer function: 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+G_{p}(s)=\frac{1}{Is^{2}+K_{d}s}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Assuming a critically damped system,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\xi=1
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+K_{d}^{2}=4IK_{p}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Closed loop system pole:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+1+G_{c}(s)=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+1+\frac{K_{p}}{Is^{2}+K_{d}s}=0
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+Is^{2}+K_{d}s+K_{p}=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+So our spacecraft is a Type 1 system.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+s^{2}+\frac{K_{d}}{I}s+\frac{K_{p}}{I}=0
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+s^{2}+2\xi\omega_{n}s+\omega_{n}^{2}=0
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+From this equation, since we know that damping and frequency are positive,
+ 
+\begin_inset Formula $K_{p}$
+\end_inset
+
+ and 
+\begin_inset Formula $K_{d}$
+\end_inset
+
+ are positive.
+ This is also verified using Routh's stability criterion.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\omega_{n}^{2}=\frac{K_{p}}{I}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+2\xi\omega_{n}=\frac{K_{d}}{I}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\xi=\frac{K_{d}}{2\omega_{n}I}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\xi^{2}=\frac{K_{d}^{2}}{4\frac{K_{p}}{I}I^{2}}=\frac{K_{d}^{2}}{4K_{p}I}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Steady State errors
+\end_layout
+
+\begin_layout Standard
+Without consideration of disturbance torque, the steady state error is given
+ by,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+lim_{s\rightarrow0}\frac{sR(s)}{1+G_{0}(s)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\text{lim}_{s\rightarrow0}\frac{sR(s)}{1+\left(\frac{1}{Is^{2}+K_{d}s}\right)G_{c}(s)} & =\text{lim}_{s\rightarrow0}\frac{s(Is^{2}+K_{d}s)}{Is^{2}+K_{d}s+G_{c}(s)}R(s)\\
+= & \text{lim}_{s\rightarrow0}\frac{Is+K_{d}}{I+\frac{K_{d}}{s}+\frac{G_{c}(s)}{s^{2}}}R(s)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Test signals 
+\begin_inset Formula $R(s)=\frac{1}{s}$
+\end_inset
+
+, 
+\begin_inset Formula $R(s)=\frac{1}{s^{2}}$
+\end_inset
+
+,
+\begin_inset Formula $R(s)=\frac{1}{s^{3}}$
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Subsubsection
+Step Input
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\text{lim}_{s\rightarrow0}\frac{Is+K_{d}}{I+\frac{K_{d}}{s}+\frac{G_{c}(s)}{s^{2}}}\frac{1}{s} & =\text{lim}_{s\rightarrow0}\frac{Is+K_{d}}{Is+K_{d}+\frac{G_{c}(s)}{s}}\\
+= & \text{lim}_{s\rightarrow0}\frac{Is+K_{d}}{Is+K_{d}+\frac{K_{p}}{s}}\\
+= & 0
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Ramp Input
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\text{lim}_{s\rightarrow0}\frac{Is+K_{d}}{I+\frac{K_{d}}{s}+\frac{G_{c}(s)}{s^{2}}}\frac{1}{s^{2}} & =\text{lim}_{s\rightarrow0}\frac{Is+K_{d}}{Is^{2}+K_{d}s+K_{p}}\\
+= & \frac{K_{d}}{K_{p}}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Accelerating Input
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\text{lim}_{s\rightarrow0}\frac{Is+K_{d}}{I+\frac{K_{d}}{s}+\frac{G_{c}(s)}{s^{2}}}\frac{1}{s^{3}} & =\text{lim}_{s\rightarrow0}\frac{Is+K_{d}}{Is^{3}+K_{d}s^{2}+sK_{p}}\\
+= & K_{d}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Momemtum dumping
+\end_layout
+
+\begin_layout Standard
+There is a maximum capacity that each of the wheel is designed for.
+ If by applying control torques multiple times over the operation period,
+ this capacity is reached, the wheel cannot be used and thus, requires the
+ momentum of the entire spacecraft to be dumped using thrusters in order
+ to restore the wheel to working configuration.
+\end_layout
+
+\begin_layout Subsection
+Criteria 1: Maximum cap on angular rate in the wheel frame.
+ 
+\end_layout
+
+\begin_layout Standard
+Consider the wheel torque on a wheel 
+\series bold
+i
+\series default
+.
+ In the wheel frame, the moment of inertia of the entire spacecraft is 
+\begin_inset Formula $I_{t}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+T_{i} & = & I_{t}\frac{d\omega_{t}}{dt}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+\omega_{t} & = & \omega_{i}+C_{w_{i}b}\omega
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+I_{t}\frac{d\omega_{tw}}{dt} & = & I_{t}\frac{d\omega_{t}}{dt}+\omega_{t}\times I_{t}\omega_{t}\\
+ & = & I_{t}\left(\dot{\omega}_{i}+C_{w_{i}b}\dot{\omega}_{b}+\dot{C}_{w_{i}b}\omega_{b}\right)\\
+ &  & +\left(\omega_{i}+C_{wb}\omega_{b}\right)\times\left[I_{t}\left(\omega_{i}+C_{wb}\omega_{b}\right)\right]\\
+ & = & I_{t}\dot{\omega}_{i}+I_{t}C_{w_{i}b}\dot{\omega}_{b}+\omega_{i}\times I_{t}\left(\omega_{i}+C_{wb}\omega_{b}\right)\\
+ &  & +C_{wb}\omega_{b}\times I_{t}\left(\omega_{i}+C_{wb}\omega_{b}\right)
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+All quantities quantities on RHS can be known at any instant from the dynamics.
+ The dumping is done if the angular rate so obtained exceeds the cutoff.
+\end_layout
+
+\begin_layout Subsection
+Criteria 2: Maximum cap on Torque 
+\end_layout
+
+\begin_layout Standard
+From our wheel dynamics, for a given control torque, each of the component
+ torques given to every wheel is known.
+ If it exceeds the maximum allowable torque rating of the wheel, momentum
+ dumping is done.
+\end_layout
+
+\begin_layout Subsection
+Criteria 2: Maximum cap on wheel angular momentum
+\end_layout
+
+\begin_layout Standard
+Again, from our wheel dynamics, the applied wheel torque changes the angular
+ speed of the wheel which has a maximum capacity.
+ The resulting angular speed from a given torque must be estimated beforehand
+ to see if it exceeds the capacity.
+ If it is so, dumping of momentum is done.
+\end_layout
+
+\begin_layout Section
+Results
+\end_layout
+
+\begin_layout Subsection
+Wheel responses
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename results eps files/Wheel_1_torque_zero_ig_gg_w_c.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename results eps files/Wheel_2_torque_zero_ig_gg_w_c.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename results eps files/Wheel_3_torque_zero_ig_gg_w_c.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename results eps files/Wheel_4_torque_zero_ig_gg_w_c.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename results eps files/Euler_angle_zero_ig_gg_w_c.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename results eps files/Euler_angle_zero_ig_w_c.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename results eps files/Euler_rate_zero_ig_gg_w_c.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename results eps files/Euler_rate_zero_ig_w_c.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Conclusions
+\end_layout
+
+\begin_layout Standard
+A modified PD controller was used to control Astrosat to make it stable
+ given a small disturbance.
+ The gains 
+\begin_inset Formula $K_{p}$
+\end_inset
+
+ and 
+\begin_inset Formula $K_{d}$
+\end_inset
+
+ were set so that the steady state errors in the euler angles do not exceed
+ 0.005 degrees.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-1-1"
+
+\end_inset
+
+ Spacecraft Dynamics and Control - Marcel J.Sidis
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-1"
+
+\end_inset
+
+Spacecraft Dynamics and Control - Anton de Ruiter, Christopher Dameren,
+ James Forbes
+\end_layout
+
+\end_body
+\end_document

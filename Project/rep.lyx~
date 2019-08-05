@@ -1,0 +1,333 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass amsart
+\begin_preamble
+
+\end_preamble
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+customHeadersFooters
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command bibtex
+\index_command default
+\float_placement H
+\paperfontsize 9
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks true
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize letterpaper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\backgroundcolor #ffffff
+\fontcolor #000000
+\notefontcolor #0000ff
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\topmargin 4cm
+\rightmargin 2cm
+\bottommargin 3cm
+\headheight 1cm
+\headsep 0.5cm
+\footskip 1cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 2
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Dynamics and Control Of Spacecraft
+\begin_inset Newline newline
+\end_inset
+
+Astrosat Controller Design
+\end_layout
+
+\begin_layout Author
+Rishi - AE
+\begin_inset Newline newline
+\end_inset
+
+Kavita Sivaraman - AE 
+\begin_inset Newline newline
+\end_inset
+
+Prem Sagar S - AE14B021
+\begin_inset Newline newline
+\end_inset
+
+Daniel - 
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Section
+Kinematics
+\end_layout
+
+\begin_layout Section
+Dynamics
+\end_layout
+
+\begin_layout Standard
+Since we are using a zero momentum biased control system, the following
+ holds true.
+ Where 
+\begin_inset Formula $\vec{h_{i}}$
+\end_inset
+
+ are the wheel angular momentum.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\vec{h}_{1}+\vec{h}_{2}+\vec{h}_{3}+\vec{h}_{4}=0
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Also each of XYZ components must be zero.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+h_{wx}=\frac{h_{1}}{\sqrt{3}}-\frac{h_{2}}{\sqrt{3}}-\frac{h_{3}}{\sqrt{3}}+\frac{h_{4}}{\sqrt{3}}=0
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+h_{wy}=\frac{h_{1}}{\sqrt{3}}-\frac{h_{2}}{\sqrt{3}}+\frac{h_{3}}{\sqrt{3}}-\frac{h_{4}}{\sqrt{3}}=0
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+h_{wz}=\frac{h_{1}}{\sqrt{3}}+\frac{h_{2}}{\sqrt{3}}-\frac{h_{3}}{\sqrt{3}}-\frac{h_{4}}{\sqrt{3}}=0
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Euler equations for the spacecraft system can be rewritten as below,
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\begin{aligned}\end{aligned}
+$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}J_{x}\ddot{\omega}_{x}+\frac{I_{w}\dot{\omega}_{1}}{\sqrt{3}}-\frac{I_{w}\dot{\omega}_{2}}{\sqrt{3}}+\frac{I_{w}\dot{\omega}_{3}}{\sqrt{3}}-\frac{I_{w}\dot{\omega}_{4}}{\sqrt{3}}\\
+-\omega_{z}\left(J_{y}\omega_{y}+\frac{I_{w}\omega_{1}}{\sqrt{3}}-\frac{I_{w}\omega_{2}}{\sqrt{3}}+\frac{I_{w}\omega_{3}}{\sqrt{3}}-\frac{I_{w}\omega_{4}}{\sqrt{3}}\right)\\
++\omega_{y}\left(J_{z}\omega_{z}+\frac{I_{w}\omega_{1}}{\sqrt{3}}+\frac{I_{w}\omega_{2}}{\sqrt{3}}-\frac{I_{w}\omega_{3}}{\sqrt{3}}-\frac{I_{w}\omega_{4}}{\sqrt{3}}\right) & =0
+\end{aligned}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}J_{y}\ddot{\omega}_{y}+\frac{I_{w}\dot{\omega}_{1}}{\sqrt{3}}+\frac{I_{w}\dot{\omega}_{2}}{\sqrt{3}}-\frac{I_{w}\dot{\omega}_{3}}{\sqrt{3}}+\frac{I_{w}\dot{\omega}_{4}}{\sqrt{3}}\\
++\omega_{z}\left(J_{x}\omega_{x}+\frac{I_{w}\omega_{1}}{\sqrt{3}}-\frac{I_{w}\omega_{2}}{\sqrt{3}}-\frac{I_{w}\omega_{3}}{\sqrt{3}}+\frac{I_{w}\omega_{4}}{\sqrt{3}}\right)\\
+-\omega_{x}\left(J_{z}\omega_{z}+\frac{I_{w}\omega_{1}}{\sqrt{3}}+\frac{I_{w}\omega_{2}}{\sqrt{3}}-\frac{I_{w}\omega_{3}}{\sqrt{3}}-\frac{I_{w}\omega_{4}}{\sqrt{3}}\right) & =0
+\end{aligned}
+\end{equation}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}J_{z}\ddot{\omega}_{z}+\frac{I_{w}\dot{\omega}_{1}}{\sqrt{3}}-\frac{I_{w}\dot{\omega}_{2}}{\sqrt{3}}-\frac{I_{w}\dot{\omega}_{3}}{\sqrt{3}}+\frac{I_{w}\dot{\omega}_{4}}{\sqrt{3}}\\
+-\omega_{y}\left(J_{x}\omega_{x}+\frac{I_{w}\omega_{1}}{\sqrt{3}}-\frac{I_{w}\omega_{2}}{\sqrt{3}}-\frac{I_{w}\omega_{3}}{\sqrt{3}}+\frac{I_{w}\omega_{4}}{\sqrt{3}}\right)\\
++\omega_{x}\left(J_{y}\omega_{y}+\frac{I_{w}\omega_{1}}{\sqrt{3}}-\frac{I_{w}\omega_{2}}{\sqrt{3}}+\frac{I_{w}\omega_{3}}{\sqrt{3}}-\frac{I_{w}\omega_{4}}{\sqrt{3}}\right) & =0
+\end{aligned}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+After doing small angle approximations the euler equations can be written
+ as follows,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}J_{x}\ddot{\phi}+\frac{I_{w}\dot{\omega}_{1}}{\sqrt{3}}-\frac{I_{w}\dot{\omega}_{2}}{\sqrt{3}}+\frac{I_{w}\dot{\omega}_{3}}{\sqrt{3}}-\frac{I_{w}\dot{\omega}_{4}}{\sqrt{3}}\\
+-\dot{\theta}\left(\frac{I_{w}\omega_{1}}{\sqrt{3}}-\frac{I_{w}\omega_{2}}{\sqrt{3}}+\frac{I_{w}\omega_{3}}{\sqrt{3}}-\frac{I_{w}\omega_{4}}{\sqrt{3}}\right)\\
++\dot{\psi}\left(\frac{I_{w}\omega_{1}}{\sqrt{3}}+\frac{I_{w}\omega_{2}}{\sqrt{3}}-\frac{I_{w}\omega_{3}}{\sqrt{3}}-\frac{I_{w}\omega_{4}}{\sqrt{3}}\right) & =0
+\end{aligned}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}J_{y}\ddot{\omega}_{y}+\frac{I_{w}\dot{\omega}_{1}}{\sqrt{3}}+\frac{I_{w}\dot{\omega}_{2}}{\sqrt{3}}-\frac{I_{w}\dot{\omega}_{3}}{\sqrt{3}}+\frac{I_{w}\dot{\omega}_{4}}{\sqrt{3}}\\
++\dot{\theta}\left(\frac{I_{w}\omega_{1}}{\sqrt{3}}-\frac{I_{w}\omega_{2}}{\sqrt{3}}-\frac{I_{w}\omega_{3}}{\sqrt{3}}+\frac{I_{w}\omega_{4}}{\sqrt{3}}\right)\\
+-\dot{\phi}\left(\frac{I_{w}\omega_{1}}{\sqrt{3}}+\frac{I_{w}\omega_{2}}{\sqrt{3}}-\frac{I_{w}\omega_{3}}{\sqrt{3}}-\frac{I_{w}\omega_{4}}{\sqrt{3}}\right) & =0
+\end{aligned}
+\end{equation}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}J_{z}\ddot{\omega}_{z}+\frac{I_{w}\dot{\omega}_{1}}{\sqrt{3}}-\frac{I_{w}\dot{\omega}_{2}}{\sqrt{3}}-\frac{I_{w}\dot{\omega}_{3}}{\sqrt{3}}+\frac{I_{w}\dot{\omega}_{4}}{\sqrt{3}}\\
+-\dot{\psi}\left(\frac{I_{w}\omega_{1}}{\sqrt{3}}-\frac{I_{w}\omega_{2}}{\sqrt{3}}-\frac{I_{w}\omega_{3}}{\sqrt{3}}+\frac{I_{w}\omega_{4}}{\sqrt{3}}\right)\\
++\dot{\phi}\left(\frac{I_{w}\omega_{1}}{\sqrt{3}}-\frac{I_{w}\omega_{2}}{\sqrt{3}}+\frac{I_{w}\omega_{3}}{\sqrt{3}}-\frac{I_{w}\omega_{4}}{\sqrt{3}}\right) & =0
+\end{aligned}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Controller Design
+\end_layout
+
+\begin_layout Standard
+Without consideration of disturbance torque
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{lim}\limits _{s\rightarrow0}\frac{sR(s)}{1+G_{0}(s)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Modified PID controller
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\text{lim}\limits _{s\rightarrow0}\frac{sR(s)}{1+\left(\frac{1}{Is}\right)G_{c}(s)}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
